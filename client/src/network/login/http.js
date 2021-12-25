@@ -28,17 +28,6 @@ export const googleOauth = (authorizationCode) =>
     }
   );
 
-export const naverOauth = (authorizationCode, state) =>
-  axios.post(
-    `${http}/oauth/navercallback`,
-    { authorizationCode, state },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-
 export const kakaoOauth = (authorizationCode) => {
   return axios
     .post(`${http}/oauth/kakaocallback`, { authorizationCode })

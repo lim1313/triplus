@@ -15,7 +15,6 @@ import MyPage from './pages/MyPage';
 import AdminPage from './pages/AdminPage';
 import Toggle from './components/common/Toggle';
 import GoogleCallback from './pages/Googlecallback';
-import NaverCallback from './pages/NaverCallback';
 
 import { useSelector } from 'react-redux';
 import ManagementPage from './pages/ManagementPage';
@@ -41,7 +40,6 @@ function App() {
         pathname === '/chat' ||
         pathname === '/mypage' ||
         pathname === '/googlecallback' ||
-        pathname === '/navercallback' ||
         pathname === '/kakaocallback'
       )
     ) {
@@ -64,7 +62,6 @@ function App() {
         <Route path='/chat' element={<ChattingPage />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/googlecallback' element={<GoogleCallback />} />
-        <Route path='/navercallback' element={<NaverCallback />} />
         <Route path='/kakaocallback' element={<KakaoCallback />} />
       </Routes>
       {(pathname === '/' || pathname === '/login' || pathname === '/signup') && (
