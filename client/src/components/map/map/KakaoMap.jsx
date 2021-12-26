@@ -87,6 +87,11 @@ export default function KakaoMap({ filterInfo, loading }) {
     //* 지도 이동, 확대, 축소 이벤트 발생
     kakao.maps.event.addListener(map, 'dragend', kakaoEvent);
     kakao.maps.event.addListener(map, 'zoom_changed', kakaoEvent);
+
+    return () => {
+      kakao.maps.event.removeListener(map, 'dragend', kakaoEvent);
+      kakao.maps.event.removeListener(map, 'zoom_changed', kakaoEvent);
+    };
   }, []);
 
   useEffect(() => {
