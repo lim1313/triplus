@@ -74,7 +74,7 @@ export default function TourManagementPage() {
     }
   };
 
-  // tourmodal delete handle function
+  // tourmodal delete handle function!
   const handleDeleteClickPageNum = () => {
     setPageNum({ approved: 1, completed: 1 });
   };
