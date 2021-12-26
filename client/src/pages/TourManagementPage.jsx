@@ -55,15 +55,12 @@ export default function TourManagementPage() {
     node && observerRef.current.observe(node);
   };
 
-  const handleAllClick = () => {
-    setIsActive({ ...isActive, all: true, approved: false, completed: false });
-  };
   const handleApprovedClick = () => {
-    setIsActive({ ...isActive, all: false, approved: true, completed: false });
+    setIsActive({ ...isActive, approved: true, completed: false });
     setPageNum({ approved: 1, completed: 1 });
   };
   const handleCompletedClick = () => {
-    setIsActive({ ...isActive, all: false, approved: false, completed: true });
+    setIsActive({ ...isActive, approved: false, completed: true });
     setPageNum({ approved: 1, completed: 1 });
   };
   const handleFilterChange = (e) => {
@@ -77,13 +74,18 @@ export default function TourManagementPage() {
     }
   };
 
+  // tourmodal delete handle function!
+  const handleDeleteClickPageNum = () => {
+    setPageNum({ approved: 1, completed: 1 });
+  };
   return (
     <>
-      {isOpen && <TourModal modalInfo={modalInfo} />}
+      {isOpen && (
+        <TourModal modalInfo={modalInfo} handleDeleteClickPageNum={handleDeleteClickPageNum} />
+      )}
       <ManageCtn>
         <SectionCtn id='scrollArea' count={items}>
           <TourFilter
-            handleAllClick={handleAllClick}
             handleApprovedClick={handleApprovedClick}
             handleCompletedClick={handleCompletedClick}
             isActive={isActive}

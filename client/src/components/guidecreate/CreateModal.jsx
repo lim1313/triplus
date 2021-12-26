@@ -83,8 +83,8 @@ export default function CreateModal(props) {
     date: new Date(new Date().setDate(new Date().getDate() + 1)),
     address: '',
     gender: false,
-    startTime: '',
-    endTime: '',
+    startTime: { sdayNight: '오전', stime: '00', sminute: '00' },
+    endTime: { edayNight: '오전', etime: '00', eminute: '00' },
     count: '',
     content: '',
     openDate: '',
@@ -127,32 +127,24 @@ export default function CreateModal(props) {
   // input상태관리 함수
   const handleInputChange = (e) => {
     const id = e.target.getAttribute('id');
-    const iStartTime = startTime.sdayNight + ' ' + startTime.stime + ':' + startTime.sminute;
-    const iEndTime = endTime.edayNight + ' ' + endTime.etime + ':' + endTime.eminute;
     if (id === 'title' && e.target.value.length > 20) return;
     if (id === 'address') {
       setInputs({
         ...inputs,
         address: address + ' ' + e.target.value,
-        startTime: iStartTime,
-        endTime: iEndTime,
       });
       setExtraAddress(e.target.value);
     } else {
-      setInputs({ ...inputs, [id]: e.target.value, startTime: iStartTime, endTime: iEndTime });
+      setInputs({ ...inputs, [id]: e.target.value });
     }
   };
 
   //date input 상태관리 함수
   const handleDateChange = (date) => {
-    const iStartTime = startTime.sdayNight + ' ' + startTime.stime + ':' + startTime.sminute;
-    const iEndTime = endTime.edayNight + ' ' + endTime.etime + ':' + endTime.eminute;
     setStartDate(date);
     setInputs({
       ...inputs,
       date: dayjs(date).format('YYYY.MM.DD'),
-      startTime: iStartTime,
-      endTime: iEndTime,
     });
   };
 
@@ -179,29 +171,36 @@ export default function CreateModal(props) {
     setStartTime({ ...startTime, [key]: e.target.value });
     if (key === 'stime') {
       setEndTime({ ...endTime, etime: e.target.value });
+      setInputs({
+        ...inputs,
+        endTime: { ...inputs.endTime, etime: e.target.value },
+        startTime: { ...inputs.startTime, stime: e.target.value },
+      });
     } else if (key === 'sminute') {
       setEndTime({ ...endTime, eminute: e.target.value });
+      setInputs({
+        ...inputs,
+        endTime: { ...inputs.endTime, eminute: e.target.value },
+        startTime: { ...inputs.startTime, sminute: e.target.value },
+      });
     } else if (key === 'sdayNight') {
       setEndTime({ ...endTime, edayNight: e.target.value });
+      setInputs({
+        ...inputs,
+        endTime: { ...inputs.endTime, edayNight: e.target.value },
+        startTime: { ...inputs.startTime, sdayNight: e.target.value },
+      });
     }
-    const iStartTime = startTime.sdayNight + ' ' + startTime.stime + ':' + startTime.sminute;
-    const iEndTime = endTime.edayNight + ' ' + endTime.etime + ':' + endTime.eminute;
-    setInputs({ ...inputs, startTime: iStartTime, endTime: iEndTime });
   };
   const handleEndTimeChange = (e) => {
     const key = e.target.getAttribute('id');
     setEndTime({ ...endTime, [key]: e.target.value });
-    const iStartTime = startTime.sdayNight + ' ' + startTime.stime + ':' + startTime.sminute;
-    const iEndTime = endTime.edayNight + ' ' + endTime.etime + ':' + endTime.eminute;
-    setInputs({ ...inputs, startTime: iStartTime, endTime: iEndTime });
+    setInputs({ ...inputs, endTime: { ...inputs.endTime, [key]: e.target.value } });
   };
 
   // 성별 토글 상태관리 함수
   const handleGenderClick = () => {
-    const iStartTime = startTime.sdayNight + ' ' + startTime.stime + ':' + startTime.sminute;
-    const iEndTime = endTime.edayNight + ' ' + endTime.etime + ':' + endTime.eminute;
     setIsGender(!isGender);
-    setInputs({ ...inputs, gender: !isGender, startTime: iStartTime, endTime: iEndTime });
   };
 
   const inputCheck = (checkData) => {
@@ -220,7 +219,21 @@ export default function CreateModal(props) {
       setIsLoading(true);
       const formData = new FormData();
       for (let key in inputs) {
-        formData.append(key, inputs[key]);
+        if (key === 'startTime') {
+          const iStartTime =
+            inputs.startTime.sdayNight +
+            ' ' +
+            inputs.startTime.stime +
+            ':' +
+            inputs.startTime.sminute;
+          formData.append(key, iStartTime);
+        } else if (key === 'endTime') {
+          const iEndTime =
+            inputs.endTime.edayNight + ' ' + inputs.endTime.etime + ':' + inputs.endTime.eminute;
+          formData.append(key, iEndTime);
+        } else {
+          formData.append(key, inputs[key]);
+        }
       }
       for (let key in fileArray) {
         if (fileArray[key]) {

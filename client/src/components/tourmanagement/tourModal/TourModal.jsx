@@ -88,7 +88,7 @@ const MsgWapper = styled.div`
   text-align: center;
 `;
 
-export default function TourModal({ modalInfo }) {
+export default function TourModal({ modalInfo, handleDeleteClickPageNum }) {
   const {
     title,
     address,
@@ -137,6 +137,7 @@ export default function TourModal({ modalInfo }) {
               dispatch(openTourModal({ isOpen: false, modalInfo: {} }));
               dispatch(clickDelete());
               dispatch(completeDelete());
+              handleDeleteClickPageNum();
             }, 1000);
           }
         })
@@ -169,6 +170,7 @@ export default function TourModal({ modalInfo }) {
             setIsCompletedMsg(false);
             dispatch(openTourModal({ isOpen: false, modalInfo: {} }));
             dispatch(completeDelete());
+            handleDeleteClickPageNum();
           }, 1000);
         }
       })
