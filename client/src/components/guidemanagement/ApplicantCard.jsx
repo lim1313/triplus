@@ -76,7 +76,7 @@ export default function ApplicantCard(props) {
     <CardCtn ref={cardRef}>
       <GuideInfo>
         <UserProfile
-          userImg={'/asset/logo/logo.png'}
+          userImg={applicant ? applicant.image : '/asset/logo/logo.png'}
           width='100px'
           height='100px'
           mWidth='70px'
