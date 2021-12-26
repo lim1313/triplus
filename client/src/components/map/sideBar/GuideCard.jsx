@@ -176,8 +176,6 @@ export default function GuideCard({ cardInfo, ulRef, scroll }) {
   const { title, gender, guideDate, tourImage, userImage, state, nickName, content, guideId } =
     cardInfo;
 
-  let scrollerTimeStart;
-
   const { modalInfo } = useSelector((state) => state.guideModalReducer);
   const dispatch = useDispatch();
   let dDay = getDday(guideDate);
@@ -190,39 +188,27 @@ export default function GuideCard({ cardInfo, ulRef, scroll }) {
     });
   };
 
-  useEffect(() => {
-    if (scroll) {
-      scrollTimeout();
-      ulRef.current.addEventListener('scroll', scrollTimeout, false);
-    }
-  }, []);
-
-  const scrollTimeout = () => {
-    if (scrollerTimeStart) {
-      clearTimeout(scrollerTimeStart);
-    }
-
-    scrollerTimeStart = setTimeout(() => {
-      const imgCard = cardRef.current;
-      if (!imgCard) return;
-      const classes = imgCard && imgCard.classList;
-
-      if (classes.contains('imgload'))
-        return ulRef.current.removeEventListener('scroll', scrollTimeout, false);
-
-      let elementTop = cardRef.current.getBoundingClientRect().top;
-      let elementLeft = cardRef.current.getBoundingClientRect().left;
-
-      if (
-        elementTop < window.innerHeight + window.pageYOffset + 500 &&
-        elementLeft < window.innerWidth + window.pageXOffset + 500
-      ) {
-        const node = cardRef.current;
-
-        if (node) classes.add('imgload');
-      }
-    }, 50);
+  const option = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0,
   };
+
+  const callback = (entries, observer) => {
+    const [entry] = entries;
+    if (entry.isIntersecting) {
+      let classes = cardRef.current.classList;
+      classes.add('imgload');
+      if (classes.contains('imgload')) observer.unobserve(cardRef.current);
+    }
+  };
+
+  useEffect(() => {
+    const interObserver = new IntersectionObserver(callback, option);
+    if (cardRef.current) interObserver.observe(cardRef.current);
+
+    return () => interObserver.disconnect();
+  }, []);
 
   return (
     <CardLi
