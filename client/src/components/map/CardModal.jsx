@@ -110,8 +110,8 @@ export default function CardModal({ modalInfo }) {
   return (
     <>
       <ModalWrapper>
-        <BtnWrapper onClick={closeModal}>
-          <CloseBtn>
+        <BtnWrapper>
+          <CloseBtn onClick={closeModal}>
             <FaTimes />
           </CloseBtn>
         </BtnWrapper>

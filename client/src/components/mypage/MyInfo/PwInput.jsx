@@ -23,11 +23,11 @@ const InputPw = styled.input`
 const AlertMsg = styled.div`
   position: absolute;
   bottom: -1.4rem;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: ${({ theme }) => theme.color.red};
 
   @media ${({ theme }) => theme.device.mobile} {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
 `;
 export default function PwInput({ firstInput, subTitle, pwNum, onChange, alertMsg, onBlur }) {
