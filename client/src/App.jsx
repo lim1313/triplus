@@ -1,25 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps*/
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import NavBar from './components/common/NavBar';
 import Footer from './components/common/Footer';
-
-import MainPage from './pages/MainPage';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import MapPage from './pages/MapPage';
-import ChattingPage from './pages/ChattingPage';
-import MyPage from './pages/MyPage';
-import AdminPage from './pages/AdminPage';
 import Toggle from './components/common/Toggle';
-import GoogleCallback from './pages/Googlecallback';
+import Loading from './components/common/Loading';
 
-import { useSelector } from 'react-redux';
-import ManagementPage from './pages/ManagementPage';
-import TourManagementPage from './pages/TourManagementPage';
-import KakaoCallback from './pages/KakaoCallback';
+const MainPage = lazy(() => import('./pages/MainPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const SignupPage = lazy(() => import('./pages/SignupPage'));
+const MapPage = lazy(() => import('./pages/MapPage'));
+const ChattingPage = lazy(() => import('./pages/ChattingPage'));
+const MyPage = lazy(() => import('./pages/MyPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
+const GoogleCallback = lazy(() => import('./pages/Googlecallback'));
+const ManagementPage = lazy(() => import('./pages/ManagementPage'));
+const KakaoCallback = lazy(() => import('./pages/KakaoCallback'));
+const TourManagementPage = lazy(() => import('./pages/TourManagementPage'));
 
 function App() {
   const navigate = useNavigate();
@@ -50,20 +50,22 @@ function App() {
     <>
       {pathname === '/admin' ? null : <NavBar />}
       {isToggled && <Toggle />}
-      <Routes>
-        <Route path='/admin' element={<AdminPage />} />
-        <Route path='/' element={<MainPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/signup' element={<SignupPage />} />
-        <Route path='/map' element={<MapPage />} />
-        <Route path='/management' element={<ManagementPage />}>
-          <Route path='tourlist' element={<TourManagementPage />} />
-        </Route>
-        <Route path='/chat' element={<ChattingPage />} />
-        <Route path='/mypage' element={<MyPage />} />
-        <Route path='/googlecallback' element={<GoogleCallback />} />
-        <Route path='/kakaocallback' element={<KakaoCallback />} />
-      </Routes>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path='/admin' element={<AdminPage />} />
+          <Route path='/' element={<MainPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/signup' element={<SignupPage />} />
+          <Route path='/map' element={<MapPage />} />
+          <Route path='/management' element={<ManagementPage />}>
+            <Route path='tourlist' element={<TourManagementPage />} />
+          </Route>
+          <Route path='/chat' element={<ChattingPage />} />
+          <Route path='/mypage' element={<MyPage />} />
+          <Route path='/googlecallback' element={<GoogleCallback />} />
+          <Route path='/kakaocallback' element={<KakaoCallback />} />
+        </Routes>
+      </Suspense>
       {(pathname === '/' || pathname === '/login' || pathname === '/signup') && (
         <Footer main={pathname === '/' ? 'main' : null} />
       )}
