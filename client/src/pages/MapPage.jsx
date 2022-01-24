@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import SideBar from '../components/map/SideBar';
 import styled from 'styled-components';
 import KakaoMap from '../components/map/map/KakaoMap';
@@ -20,14 +20,11 @@ export default function MapPage() {
   const [filterInfo, setFilterInfo] = useState({ gender: '', startDate: '', endDate: '' });
   const [isLoading, setIsLoading] = useState(false);
 
-  const filterSubmit = (...args) => {
+  const filterSubmit = useCallback((...args) => {
     let [gen, start, end] = args;
-    let { gender, startDate, endDate } = filterInfo;
-    if (gen !== gender || start !== startDate || end !== endDate) {
-      let cardFilter = { gender: gen, startDate: start, endDate: end };
-      setFilterInfo(cardFilter);
-    }
-  };
+    let cardFilter = { gender: gen, startDate: start, endDate: end };
+    setFilterInfo(cardFilter);
+  }, []);
 
   return (
     <MapContainer>

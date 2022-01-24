@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import styled from 'styled-components';
 import { FilterFrame } from '../../../styles/map/filterFrame';
 import DateFilter from './DateFilter';
 import GenderFilter from './GenderFilter';
-// import { FaSearchLocation } from 'react-icons/fa';
 
 const FilterWrapper = styled.div`
   position: absolute;
@@ -55,8 +54,7 @@ const SearchBtn = styled(FilterFrame).attrs({
     font-size: 0.9rem;
   }
 `;
-
-export default function CardFilter({ filterSubmit }) {
+function CardFilter({ filterSubmit }) {
   const [gender, setGender] = useState('');
   const [date, setDate] = useState([]);
 
@@ -75,7 +73,6 @@ export default function CardFilter({ filterSubmit }) {
         <div className='genderWrapper'>
           <GenderFilter changeGender={(data) => setGender(data)} />
           <SearchBtn width='80px' onClick={filterClick}>
-            {/* <FaSearchLocation /> */}
             <span>적용하기</span>
           </SearchBtn>
         </div>
@@ -83,3 +80,5 @@ export default function CardFilter({ filterSubmit }) {
     </FilterWrapper>
   );
 }
+
+export default memo(CardFilter);
